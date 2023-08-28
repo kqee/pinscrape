@@ -5,7 +5,7 @@
 `pip install pinscrape`
 
 # NOTE
-this version of pinscrape removes the need to use numpy and opencv. instead, it relies on requests, bs4 and some other modules.
+this version of pinscrape removes the need to use numpy and opencv. instead, it relies on **requests**, **bs4** and ***some other modules***.
 
 ### How to use?
 ```python
