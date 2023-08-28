@@ -65,9 +65,9 @@ class PinterestImageScraper:
                 for url in urls:
                     url_list.append(url)
 
-                    #if the maximum has been achieved, return early
                     if max_images is not None and max_images == len(url_list):
                         return list(set(url_list))
+                    #if the maximum has been achieved, return early
                     
 
             except Exception as e:
@@ -96,6 +96,7 @@ class PinterestImageScraper:
                 return
             self.unique_img.append(file_name)
             with open(file_path, "wb") as file:
+                print(f"writing image to {file.name}")
                 for content in result:
                     file.write(content)
             # img_arr = np.asarray(bytearray(result), dtype="uint8")
@@ -116,6 +117,7 @@ class PinterestImageScraper:
     # -------------------------- get user keyword and google search for that keywords ---------------------
     @staticmethod
     def start_scraping(max_images, key=None, proxies={}):
+        print("beginning to scrape...")
         assert key != None, "Please provide keyword for searching images"
         keyword = key + " pinterest"
         keyword = keyword.replace("+", "%20")
@@ -155,16 +157,15 @@ class PinterestImageScraper:
             
             return_data["isDownloaded"] = True
             return return_data
-        
         return return_data
 
 
 scraper = PinterestImageScraper()
 
 if __name__ == "__main__":
-    details = scraper.scrape("pink anime", "output",max_images=100)
+    details = scraper.scrape("pink anime", "output",max_images=10)
     print(details)
-    if details["isDownloaded"]:
-        print("\nDownloading completed !!")
-    else:
-        print("\nNothing to download !!")
+    # if details["isDownloaded"]:
+    #     print("\nDownloading completed !!")
+    # else:
+    #     print("\nNothing to download !!")
