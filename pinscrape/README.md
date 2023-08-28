@@ -8,5 +8,5 @@ python pinscrapescript.py -h # prints out help
 python pinscrapescript.py -k 'trees' -l 10 -o 'output'
 # -k is key
 # -l is limit
-# -o is output
+# -o is output to a folders
 ```

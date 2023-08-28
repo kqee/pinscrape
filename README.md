@@ -3,6 +3,10 @@
 
 ### This package can be use to scrape images from pinterest just by using any search keywords. Install it just by using <br><br>
 `pip install pinscrape`
+
+# NOTE
+this version of pinscrape removes the need to use numpy and opencv. instead, it relies on requests, bs4 and some other modules.
+
 ### How to use?
 ```python
 from pinscrape import pinscrape
