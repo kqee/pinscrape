@@ -1,8 +1,8 @@
 import re
 import json
 import os
-import cv2
-import numpy as np
+# import cv2
+# import numpy as np
 
 from requests import get
 from bs4 import BeautifulSoup as soup
@@ -76,10 +76,10 @@ class PinterestImageScraper:
         return list(set(url_list))
 
     # ------------------------------ image hash calculation -------------------------
-    def dhash(self, image, hashSize=8):
-        resized = cv2.resize(image, (hashSize + 1, hashSize))
-        diff = resized[:, 1:] > resized[:, :-1]
-        return sum([2 ** i for (i, v) in enumerate(diff.flatten()) if v])
+    # def dhash(self, image, hashSize=8):
+    #    resized = cv2.resize(image, (hashSize + 1, hashSize))
+    #    diff = resized[:, 1:] > resized[:, :-1]
+    #    return sum([2 ** i for (i, v) in enumerate(diff.flatten()) if v])
 
     # ------------------------------  save all downloaded images to folder ---------------------------
     def saving_op(self, var):
@@ -87,14 +87,22 @@ class PinterestImageScraper:
         if not os.path.exists(os.path.join(os.getcwd(), folder_name)):
                 os.mkdir(os.path.join(os.getcwd(), folder_name))
         for img in url_list:
-            result = get(img, stream=True).content
+            result = get(img, stream=True).iter_content(chunk_size=1024)
             file_name = img.split("/")[-1]
             file_path = os.path.join(os.getcwd(), folder_name, file_name)
-            img_arr = np.asarray(bytearray(result), dtype="uint8")
-            image = cv2.imdecode(img_arr, cv2.IMREAD_COLOR)
-            if not self.dhash(image) in self.unique_img:
-                cv2.imwrite(file_path, image)
-            self.unique_img.append(self.dhash(image))
+            if file_name in self.unique_img:
+                return
+            if file_name in os.listdir(folder_name):
+                return
+            self.unique_img.append(file_name)
+            with open(file_path, "wb") as file:
+                for content in result:
+                    file.write(content)
+            # img_arr = np.asarray(bytearray(result), dtype="uint8")
+            # image = cv2.imdecode(img_arr, cv2.IMREAD_COLOR)
+            # if not self.dhash(image) in self.unique_img:
+            #     cv2.imwrite(file_path, image)
+            # self.unique_img.append(self.dhash(image))
 
     # ------------------------------  download images from image url list ----------------------------
     def download(self, url_list, num_of_workers, output_folder):
@@ -154,8 +162,8 @@ class PinterestImageScraper:
 scraper = PinterestImageScraper()
 
 if __name__ == "__main__":
-    details = scraper.scrape("messi", "output")
-
+    details = scraper.scrape("pink anime", "output",max_images=100)
+    print(details)
     if details["isDownloaded"]:
         print("\nDownloading completed !!")
     else:
