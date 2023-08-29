@@ -1,4 +1,3 @@
-from ast import Interactive
 from tokenize import group
 from pins.pinscrape import scraper
 
