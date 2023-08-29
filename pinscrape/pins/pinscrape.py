@@ -96,7 +96,7 @@ class PinterestImageScraper:
                 return
             self.unique_img.append(file_name)
             with open(file_path, "wb") as file:
-                print(f"writing image to {file.name}")
+                print(f"writing image to {os.path.abspath(file.name)}")
                 for content in result:
                     file.write(content)
             # img_arr = np.asarray(bytearray(result), dtype="uint8")
@@ -169,3 +169,9 @@ if __name__ == "__main__":
     #     print("\nDownloading completed !!")
     # else:
     #     print("\nNothing to download !!")
+
+
+# TODO:
+# the function scrape should not download files but rather return
+# links extracted from pinterest and let the user decide what to
+# to do with the links, change it.
